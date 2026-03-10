@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<title>자리 바꾸기</title>
+
+<style>
+
+/* ================= 배경 ================= */
+
+body {
+  margin: 0;
+  font-family: sans-serif;
+
+  background-color: #ddd;
+  background-image: radial-gradient(#bbb 1px, transparent 1px);
+  background-size: 20px 20px;
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+
+/* ================= 버튼 ================= */
+
+button {
+  font-size: 30px;
+  padding: 10px 30px;
+  margin: 20px;
+}
+
+
+/* ================= 자리판 ================= */
+
+#board {
+  display: grid;
+
+  grid-template-columns: repeat(6, 80px); /* 6열 */
+  grid-template-rows: repeat(5, 80px);    /* 5행 */
+
+  gap: 10px;
+}
+
+
+/* ================= 자리 ================= */
+
+.seat {
+
+  width: 80px;
+  height: 80px;
+
+  background: white;
+  border: 3px solid black;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  font-size: 25px;
+  font-weight: bold;
+}
+
+
+/* 비어있는 열 */
+
+.empty {
+  background: transparent;
+  border: none;
+}
+
+
+/* ================= 카운트다운 ================= */
+
+#countdown {
+
+  position: fixed;
+  top: 40%;
+  left: 50%;
+
+  transform: translate(-50%, -50%);
+
+  font-size: 150px;
+  font-weight: bold;
+
+  display: none;
+}
+
+</style>
+</head>
+
+
+
+<body>
+
+<button onclick="startRandom()">랜덤 바꾸기</button>
+
+<div id="board"></div>
+
+<div id="countdown">3</div>
+
+
+
+<script>
+
+/* ===== 자리 생성 ===== */
+
+const board = document.getElementById("board");
+
+let seats = [];
+
+
+for (let r = 0; r < 5; r++) {
+
+  for (let c = 0; c < 6; c++) {
+
+    let div = document.createElement("div");
+
+    if (c === 5) {
+
+      div.className = "seat empty";
+
+    } else {
+
+      div.className = "seat";
+      seats.push(div);
+
+    }
+
+    board.appendChild(div);
+  }
+}
+
+
+
+/* ===== 랜덤 ===== */
+
+function shuffle(array) {
+
+  for (let i = array.length - 1; i > 0; i--) {
+
+    let j = Math.floor(Math.random() * (i + 1));
+
+    [array[i], array[j]] = [array[j], array[i]];
+  }
+}
+
+
+
+/* ===== 자리 배치 ===== */
+
+function assignSeats() {
+
+  let nums = [];
+
+  for (let i = 1; i <= 24; i++) {
+    nums.push(i);
+  }
+
+  shuffle(nums);
+
+  seats.forEach((seat, i) => {
+
+    if (i < 24) {
+      seat.textContent = nums[i];
+    } else {
+      seat.textContent = "";
+    }
+
+  });
+}
+
+
+
+/* ===== 카운트다운 ===== */
+
+function startRandom() {
+
+  let cd = document.getElementById("countdown");
+
+  let n = 3;
+
+  cd.style.display = "block";
+  cd.textContent = n;
+
+  let timer = setInterval(() => {
+
+    n--;
+
+    if (n === 0) {
+
+      clearInterval(timer);
+
+      cd.style.display = "none";
+
+      assignSeats();
+
+    } else {
+
+      cd.textContent = n;
+
+    }
+
+  }, 1000);
+
+}
+
+
+</script>
+
+</body>
+</html>
