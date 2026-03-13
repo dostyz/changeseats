@@ -96,32 +96,34 @@ button {
 <script>
 
 
-const names = [
+/* 번호+이름 세트 */
 
-"가서한",
-"강다솔",
-"강채원",
-"고윤솔",
-"김소리",
-"김수아",
-"노윤서",
-"문채은",
-"박민영",
-"박한을",
-"배재은",
-"신예은",
-"엄수정",
-"원태령",
-"유진명",
-"이서은",
-"이은선",
-"이해인",
-"임서현",
-"장시연",
-"전은주",
-"최소현",
-"한나연",
-"홍민서"
+const students = [
+
+{num:1, name:"가서한"},
+{num:2, name:"강다솔"},
+{num:3, name:"강채원"},
+{num:4, name:"고윤솔"},
+{num:5, name:"김소리"},
+{num:6, name:"김수아"},
+{num:7, name:"노윤서"},
+{num:8, name:"문채은"},
+{num:9, name:"박민영"},
+{num:10, name:"박한을"},
+{num:11, name:"배재은"},
+{num:12, name:"신예은"},
+{num:13, name:"엄수정"},
+{num:14, name:"원태령"},
+{num:15, name:"유진명"},
+{num:16, name:"이서은"},
+{num:17, name:"이은선"},
+{num:18, name:"이해인"},
+{num:19, name:"임서현"},
+{num:20, name:"장시연"},
+{num:21, name:"전은주"},
+{num:22, name:"최소현"},
+{num:23, name:"한나연"},
+{num:24, name:"홍민서"}
 
 ];
 
@@ -129,6 +131,9 @@ const names = [
 const board = document.getElementById("board");
 
 let seats = [];
+
+
+/* 자리 생성 */
 
 for (let r = 0; r < 5; r++) {
 
@@ -152,6 +157,8 @@ for (let r = 0; r < 5; r++) {
 }
 
 
+/* 섞기 */
+
 function shuffle(array) {
 
   for (let i = array.length - 1; i > 0; i--) {
@@ -163,9 +170,11 @@ function shuffle(array) {
 }
 
 
+/* 자리 배치 */
+
 function assignSeats() {
 
-  let arr = [...names];
+  let arr = [...students];
 
   shuffle(arr);
 
@@ -177,11 +186,11 @@ function assignSeats() {
 
       let num = document.createElement("div");
       num.className = "num";
-      num.textContent = i + 1;
+      num.textContent = arr[i].num;
 
       let name = document.createElement("div");
       name.className = "name";
-      name.textContent = arr[i];
+      name.textContent = arr[i].name;
 
       seat.appendChild(num);
       seat.appendChild(name);
@@ -190,6 +199,8 @@ function assignSeats() {
   });
 }
 
+
+/* 카운트다운 */
 
 function startRandom() {
 
