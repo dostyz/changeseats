@@ -6,8 +6,6 @@
 
 <style>
 
-/* ===== 배경 (도트 크게) ===== */
-
 body {
   margin: 0;
   font-family: sans-serif;
@@ -21,63 +19,53 @@ body {
   align-items: center;
 }
 
-
-/* ===== 버튼 ===== */
-
 button {
   font-size: 30px;
   padding: 10px 30px;
   margin: 20px;
 }
 
-
-/* ===== 자리판 ===== */
-
 #board {
 
   display: grid;
 
-  /* 2칸 + 통로 + 2칸 + 통로 + 2칸 */
-
   grid-template-columns:
-    80px 80px 40px
-    80px 80px 40px
-    80px 80px;
+    96px 96px 40px
+    96px 96px 40px
+    96px 96px;
 
   grid-template-rows: repeat(5, 80px);
 
   gap: 10px;
 }
 
-
-/* ===== 자리 ===== */
-
 .seat {
 
-  width: 80px;
+  width: 96px;
   height: 80px;
 
   background: white;
   border: 3px solid black;
 
   display: flex;
+  flex-direction: column;
   justify-content: center;
   align-items: center;
-
-  font-size: 25px;
-  font-weight: bold;
 }
 
+.num {
+  font-size: 12px;
+}
 
-/* 통로 */
+.name {
+  font-size: 22px;
+  font-weight: bold;
+}
 
 .empty {
   background: transparent;
   border: none;
 }
-
-
-/* ===== 카운트다운 ===== */
 
 #countdown {
 
@@ -97,8 +85,6 @@ button {
 </style>
 </head>
 
-
-
 <body>
 
 <button onclick="startRandom()">랜덤 바꾸기</button>
@@ -107,17 +93,42 @@ button {
 
 <div id="countdown">3</div>
 
-
-
 <script>
+
+
+const names = [
+
+"가서한",
+"강다솔",
+"강채원",
+"고윤솔",
+"김소리",
+"김수아",
+"노윤서",
+"문채은",
+"박민영",
+"박한을",
+"배재은",
+"신예은",
+"엄수정",
+"원태령",
+"유진명",
+"이서은",
+"이은선",
+"이해인",
+"임서현",
+"장시연",
+"전은주",
+"최소현",
+"한나연",
+"홍민서"
+
+];
 
 
 const board = document.getElementById("board");
 
 let seats = [];
-
-
-/* ===== 자리 생성 ===== */
 
 for (let r = 0; r < 5; r++) {
 
@@ -141,8 +152,6 @@ for (let r = 0; r < 5; r++) {
 }
 
 
-/* ===== 섞기 ===== */
-
 function shuffle(array) {
 
   for (let i = array.length - 1; i > 0; i--) {
@@ -154,31 +163,33 @@ function shuffle(array) {
 }
 
 
-/* ===== 자리 배치 ===== */
-
 function assignSeats() {
 
-  let nums = [];
+  let arr = [...names];
 
-  for (let i = 1; i <= 24; i++) {
-    nums.push(i);
-  }
-
-  shuffle(nums);
+  shuffle(arr);
 
   seats.forEach((seat, i) => {
 
-    if (i < 24) {
-      seat.textContent = nums[i];
-    } else {
-      seat.textContent = "";
+    seat.innerHTML = "";
+
+    if (i < arr.length) {
+
+      let num = document.createElement("div");
+      num.className = "num";
+      num.textContent = i + 1;
+
+      let name = document.createElement("div");
+      name.className = "name";
+      name.textContent = arr[i];
+
+      seat.appendChild(num);
+      seat.appendChild(name);
     }
 
   });
 }
 
-
-/* ===== 카운트다운 ===== */
 
 function startRandom() {
 
@@ -210,7 +221,6 @@ function startRandom() {
   }, 1000);
 
 }
-
 
 </script>
 
