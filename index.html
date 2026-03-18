@@ -225,51 +225,43 @@ function flipSeats(){
 
 /* PDF 저장 */
 
-async function savePDF(){
+async function savePDF() {
+  const boardEl = document.getElementById("board");
 
- const boardEl = document.getElementById("board");
+  const canvas = await html2canvas(boardEl, {
+    scale: 2,
+    backgroundColor: "#ffffff"
+  });
 
- const canvas = await html2canvas(boardEl,{
-  scale:2,
-  backgroundColor:"#ffffff"
- });
+  const img = canvas.toDataURL("image/png");
 
- const img = canvas.toDataURL("image/png");
+  const pdf = new window.jspdf.jsPDF({
+    orientation: "landscape",
+    unit: "mm",
+    format: "a4"
+  });
 
- const pdf = new window.jspdf.jsPDF({
-  orientation:"landscape",
-  unit:"mm",
-  format:"a4"
- });
+  const pageW = 297; // A4 landscape width
+  const pageH = 210; // A4 landscape height
+  const margin = 10; // 여백 설정
 
- const pageW = 297;
- const pageH = 210;
+  const imgW = pageW - 2 * margin; // 가로 최대치
+  const imgH = (canvas.height / canvas.width) * imgW; // 비율 유지한 세로 길이
 
- // 이미지 비율
- const ratio = canvas.width / canvas.height;
+  // 세로가 페이지보다 크면 다시 비율 조정
+  let finalW = imgW;
+  let finalH = imgH;
+  if (imgH > pageH - 2 * margin) {
+    finalH = pageH - 2 * margin;
+    finalW = finalH * (canvas.width / canvas.height);
+  }
 
- // A4 안에 80%로 맞춤
- const maxW = pageW * 0.7;
- const maxH = pageH * 0.7;
+  const x = (pageW - finalW) / 2;
+  const y = (pageH - finalH) / 2;
 
- let imgW = maxW;
- let imgH = imgW / ratio;
-
- if(imgH > maxH){
-  imgH = maxH;
-  imgW = imgH * ratio;
+  pdf.addImage(img, "PNG", x, y, finalW, finalH);
+  pdf.save("자리표.pdf");
 }
-
- // 중앙정렬
- const x = (pageW - imgW) / 2;
- const y = (pageH - imgH) / 2;
-
- pdf.addImage(img,"PNG",x,y,imgW,imgH);
-
- pdf.save("자리표.pdf");
-
-}
-
 
 /* 카운트다운 */
 
