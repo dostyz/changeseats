@@ -218,12 +218,16 @@ function flipSeats() {
 
   if (currentSeats.length === 0) return;
 
+  // 뒤집기
   let flipped = [...currentSeats].reverse();
 
-  // 위에 빈칸 6개 추가
-  let empty = new Array(6).fill(null);
+  // 항상 30칸 기준 배열 만들기
+  let result = new Array(30).fill(null);
 
-  let result = [...empty, ...flipped];
+  // 위 6칸 비우고 그 아래부터 채우기
+  for (let i = 0; i < flipped.length; i++) {
+    result[i + 6] = flipped[i];
+  }
 
   drawSeats(result);
 
