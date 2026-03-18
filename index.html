@@ -197,6 +197,8 @@ function assignSeats(){
  }
 
  originalSeats=[...result];
+ currentSeats=[...result];
+
  flippedState=false;
 
  drawSeats(result);
@@ -213,13 +215,17 @@ function flipSeats(){
 
   let rev=[...originalSeats].reverse();
 
-  drawSeats(rev);
+  currentSeats=[...rev];
+
+  drawSeats(currentSeats);
 
   flippedState=true;
 
  }else{
 
-  drawSeats(originalSeats);
+  currentSeats=[...originalSeats];
+
+  drawSeats(currentSeats);
 
   flippedState=false;
 
