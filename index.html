@@ -4,6 +4,9 @@
 <meta charset="UTF-8">
 <title>자리 바꾸기</title>
 
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+
 <style>
 
 body {
@@ -263,7 +266,7 @@ async function savePDF(){
 
 const { jsPDF } = window.jspdf;
 
- const boardEl=document.getElementById("boardWrapper");
+ const boardEl=document.getElementById("board");
 
  const canvas=await html2canvas(boardEl,{
   scale:2,
