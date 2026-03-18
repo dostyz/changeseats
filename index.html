@@ -20,9 +20,9 @@ body {
 }
 
 button {
-  font-size: 30px;
-  padding: 10px 30px;
-  margin: 20px;
+  font-size: 24px;
+  padding: 10px 20px;
+  margin: 10px;
 }
 
 #board {
@@ -88,6 +88,7 @@ button {
 <body>
 
 <button onclick="startRandom()">랜덤 바꾸기</button>
+<button onclick="flipSeats()">자리표로 변환</button>
 
 <div id="board"></div>
 
@@ -95,8 +96,6 @@ button {
 
 <script>
 
-
-/* 번호+이름 세트 */
 
 const students = [
 
@@ -131,6 +130,8 @@ const students = [
 const board = document.getElementById("board");
 
 let seats = [];
+
+let currentSeats = [];
 
 
 /* 자리 생성 */
@@ -170,13 +171,11 @@ function shuffle(array) {
 }
 
 
-/* 자리 배치 */
+/* 자리 표시 */
 
-function assignSeats() {
+function drawSeats(arr) {
 
-  let arr = [...students];
-
-  shuffle(arr);
+  currentSeats = arr;
 
   seats.forEach((seat, i) => {
 
@@ -197,6 +196,33 @@ function assignSeats() {
     }
 
   });
+
+}
+
+
+/* 자리 배치 */
+
+function assignSeats() {
+
+  let arr = [...students];
+
+  shuffle(arr);
+
+  drawSeats(arr);
+
+}
+
+
+/* 자리표 변환 (뒤집기) */
+
+function flipSeats() {
+
+  if (currentSeats.length === 0) return;
+
+  let flipped = [...currentSeats].reverse();
+
+  drawSeats(flipped);
+
 }
 
 
