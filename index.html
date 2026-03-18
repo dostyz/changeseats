@@ -20,7 +20,7 @@ body {
 }
 
 button {
-  font-size: 24px;
+  font-size: 22px;
   padding: 10px 20px;
   margin: 10px;
 }
@@ -70,15 +70,11 @@ button {
 #countdown {
 
   position: fixed;
-
   top: 40%;
   left: 50%;
-
   transform: translate(-50%, -50%);
-
   font-size: 180px;
   font-weight: bold;
-
   display: none;
 }
 
@@ -88,10 +84,9 @@ button {
 <body>
 
 <button onclick="startRandom()">랜덤 바꾸기</button>
-<button onclick="flipSeats()">자리표로 변환</button>
+<button onclick="flipSeats()">자리표 변환</button>
 
 <div id="board"></div>
-
 <div id="countdown">3</div>
 
 <script>
@@ -130,7 +125,10 @@ const students = [
 const board = document.getElementById("board");
 
 let seats = [];
-let currentSeats = [];
+
+let currentSeats = new Array(30).fill(null);
+
+let flippedState = false;
 
 
 /* 자리 생성 */
@@ -180,7 +178,7 @@ function drawSeats(arr) {
 
     seat.innerHTML = "";
 
-    if (i < arr.length) {
+    if (arr[i]) {
 
       let num = document.createElement("div");
       num.className = "num";
@@ -207,8 +205,17 @@ function assignSeats() {
 
   shuffle(arr);
 
-  drawSeats(arr);
+  let result = new Array(30).fill(null);
 
+  // 맨 아래 줄 비우기 → 위부터 채움
+
+  for (let i = 0; i < arr.length; i++) {
+    result[i] = arr[i];
+  }
+
+  flippedState = false;
+
+  drawSeats(result);
 }
 
 
@@ -218,18 +225,38 @@ function flipSeats() {
 
   if (currentSeats.length === 0) return;
 
-  // 뒤집기
-  let flipped = [...currentSeats].reverse();
+  if (!flippedState) {
 
-  // 항상 30칸 기준 배열 만들기
-  let result = new Array(30).fill(null);
+    // 180도 회전
+    let rev = [...currentSeats].reverse();
 
-  // 위 6칸 비우고 그 아래부터 채우기
-  for (let i = 0; i < flipped.length; i++) {
-    result[i + 6] = flipped[i];
+    let result = new Array(30).fill(null);
+
+    // 맨 위 비우기
+    for (let i = 0; i < 24; i++) {
+      result[i + 6] = rev[i];
+    }
+
+    drawSeats(result);
+
+    flippedState = true;
+
+  } else {
+
+    // 원상복구
+
+    let rev = [...currentSeats].reverse();
+
+    let result = new Array(30).fill(null);
+
+    for (let i = 0; i < 24; i++) {
+      result[i] = rev[i];
+    }
+
+    drawSeats(result);
+
+    flippedState = false;
   }
-
-  drawSeats(result);
 
 }
 
