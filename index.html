@@ -53,14 +53,8 @@ button {
   align-items: center;
 }
 
-.num {
-  font-size: 12px;
-}
-
-.name {
-  font-size: 22px;
-  font-weight: bold;
-}
+.num { font-size: 12px; }
+.name { font-size: 22px; font-weight: bold; }
 
 .empty {
   background: transparent;
@@ -68,7 +62,6 @@ button {
 }
 
 #countdown {
-
   position: fixed;
   top: 40%;
   left: 50%;
@@ -94,30 +87,30 @@ button {
 
 const students = [
 
-{num:1, name:"가서한"},
-{num:2, name:"강다솔"},
-{num:3, name:"강채원"},
-{num:4, name:"고윤솔"},
-{num:5, name:"김소리"},
-{num:6, name:"김수아"},
-{num:7, name:"노윤서"},
-{num:8, name:"문채은"},
-{num:9, name:"박민영"},
-{num:10, name:"박한을"},
-{num:11, name:"배재은"},
-{num:12, name:"신예은"},
-{num:13, name:"엄수정"},
-{num:14, name:"원태령"},
-{num:15, name:"유진명"},
-{num:16, name:"이서은"},
-{num:17, name:"이은선"},
-{num:18, name:"이해인"},
-{num:19, name:"임서현"},
-{num:20, name:"장시연"},
-{num:21, name:"전은주"},
-{num:22, name:"최소현"},
-{num:23, name:"한나연"},
-{num:24, name:"홍민서"}
+{num:1,name:"가서한"},
+{num:2,name:"강다솔"},
+{num:3,name:"강채원"},
+{num:4,name:"고윤솔"},
+{num:5,name:"김소리"},
+{num:6,name:"김수아"},
+{num:7,name:"노윤서"},
+{num:8,name:"문채은"},
+{num:9,name:"박민영"},
+{num:10,name:"박한을"},
+{num:11,name:"배재은"},
+{num:12,name:"신예은"},
+{num:13,name:"엄수정"},
+{num:14,name:"원태령"},
+{num:15,name:"유진명"},
+{num:16,name:"이서은"},
+{num:17,name:"이은선"},
+{num:18,name:"이해인"},
+{num:19,name:"임서현"},
+{num:20,name:"장시연"},
+{num:21,name:"전은주"},
+{num:22,name:"최소현"},
+{num:23,name:"한나연"},
+{num:24,name:"홍민서"}
 
 ];
 
@@ -127,170 +120,146 @@ const board = document.getElementById("board");
 let seats = [];
 
 let currentSeats = new Array(30).fill(null);
+let originalSeats = new Array(30).fill(null);
 
 let flippedState = false;
 
 
 /* 자리 생성 */
 
-for (let r = 0; r < 5; r++) {
+for (let r=0;r<5;r++){
+ for(let c=0;c<8;c++){
 
-  for (let c = 0; c < 8; c++) {
+  let div=document.createElement("div");
 
-    let div = document.createElement("div");
-
-    if (c === 2 || c === 5) {
-
-      div.className = "seat empty";
-
-    } else {
-
-      div.className = "seat";
-      seats.push(div);
-
-    }
-
-    board.appendChild(div);
+  if(c===2||c===5){
+    div.className="seat empty";
+  }else{
+    div.className="seat";
+    seats.push(div);
   }
+
+  board.appendChild(div);
+ }
 }
 
 
 /* 섞기 */
 
-function shuffle(array) {
-
-  for (let i = array.length - 1; i > 0; i--) {
-
-    let j = Math.floor(Math.random() * (i + 1));
-
-    [array[i], array[j]] = [array[j], array[i]];
-  }
+function shuffle(a){
+ for(let i=a.length-1;i>0;i--){
+  let j=Math.floor(Math.random()*(i+1));
+  [a[i],a[j]]=[a[j],a[i]];
+ }
 }
 
 
 /* 그리기 */
 
-function drawSeats(arr) {
+function drawSeats(arr){
 
-  currentSeats = arr;
+ currentSeats=arr;
 
-  seats.forEach((seat, i) => {
+ seats.forEach((seat,i)=>{
 
-    seat.innerHTML = "";
+  seat.innerHTML="";
 
-    if (arr[i] !== null && arr[i] !== undefined) {
+  if(arr[i]!=null){
 
-      let num = document.createElement("div");
-      num.className = "num";
-      num.textContent = arr[i].num;
+   let num=document.createElement("div");
+   num.className="num";
+   num.textContent=arr[i].num;
 
-      let name = document.createElement("div");
-      name.className = "name";
-      name.textContent = arr[i].name;
+   let name=document.createElement("div");
+   name.className="name";
+   name.textContent=arr[i].name;
 
-      seat.appendChild(num);
-      seat.appendChild(name);
-    }
+   seat.appendChild(num);
+   seat.appendChild(name);
+  }
 
-  });
+ });
 
 }
 
 
 /* 랜덤 */
 
-function assignSeats() {
+function assignSeats(){
 
-  let arr = [...students];
+ let arr=[...students];
+ shuffle(arr);
 
-  shuffle(arr);
+ let result=new Array(30).fill(null);
 
-  let result = new Array(30).fill(null);
+ for(let i=0;i<24;i++){
+  result[i]=arr[i];
+ }
 
-  // 맨 아래 줄 비우기 → 위부터 채움
+ originalSeats=[...result];
+ flippedState=false;
 
-  for (let i = 0; i < arr.length; i++) {
-    result[i] = arr[i];
-  }
-
-  flippedState = false;
-
-  drawSeats(result);
+ drawSeats(result);
 }
 
 
-/* 자리표 변환 */
+/* 변환 */
 
-function flipSeats() {
+function flipSeats(){
 
-  if (currentSeats.length === 0) return;
+ if(originalSeats.length===0) return;
 
-  if (!flippedState) {
+ if(!flippedState){
 
-    // 180도 회전
-    let rev = [...currentSeats].reverse();
+  let rev=[...originalSeats].reverse();
 
-    let result = new Array(30).fill(null);
+  let result=new Array(30).fill(null);
 
-    // 맨 위 비우기
-    for (let i = 0; i < 24; i++) {
-      result[i + 6] = rev[i];
-    }
-
-    drawSeats(result);
-
-    flippedState = true;
-
-  } else {
-
-    // 원상복구
-
-    let rev = [...currentSeats].reverse();
-
-    let result = new Array(30).fill(null);
-
-    for (let i = 0; i < 24; i++) {
-      result[i] = rev[i];
-    }
-
-    drawSeats(result);
-
-    flippedState = false;
+  for(let i=0;i<24;i++){
+   result[i+6]=rev[i];
   }
+
+  drawSeats(result);
+
+  flippedState=true;
+
+ }else{
+
+  drawSeats(originalSeats);
+  flippedState=false;
+
+ }
 
 }
 
 
 /* 카운트다운 */
 
-function startRandom() {
+function startRandom(){
 
-  let cd = document.getElementById("countdown");
+ let cd=document.getElementById("countdown");
 
-  let n = 3;
+ let n=3;
 
-  cd.style.display = "block";
-  cd.textContent = n;
+ cd.style.display="block";
+ cd.textContent=n;
 
-  let timer = setInterval(() => {
+ let t=setInterval(()=>{
 
-    n--;
+  n--;
 
-    if (n === 0) {
+  if(n===0){
 
-      clearInterval(timer);
+   clearInterval(t);
+   cd.style.display="none";
 
-      cd.style.display = "none";
+   assignSeats();
 
-      assignSeats();
+  }else{
+   cd.textContent=n;
+  }
 
-    } else {
-
-      cd.textContent = n;
-
-    }
-
-  }, 1000);
+ },1000);
 
 }
 
