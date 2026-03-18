@@ -245,11 +245,22 @@ async function savePDF(){
  const pageW = 297;
  const pageH = 210;
 
- // 🔽 80% 크기
- const imgW = 297 * 0.8;
- const imgH = canvas.height * (imgW / canvas.width);
+ // 이미지 비율
+ const ratio = canvas.width / canvas.height;
 
- // 🔽 중앙 정렬
+ // A4 안에 80%로 맞춤
+ const maxW = pageW * 0.8;
+ const maxH = pageH * 0.8;
+
+ let imgW = maxW;
+ let imgH = imgW / ratio;
+
+ if(imgH > maxH){
+  imgH = maxH;
+  imgW = imgH * ratio;
+}
+
+ // 중앙정렬
  const x = (pageW - imgW) / 2;
  const y = (pageH - imgH) / 2;
 
