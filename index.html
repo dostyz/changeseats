@@ -245,9 +245,11 @@ async function savePDF(){
  const pageW = 297;
  const pageH = 210;
 
- const imgW = 250;
+ // 🔽 80% 크기
+ const imgW = 297 * 0.8;
  const imgH = canvas.height * (imgW / canvas.width);
 
+ // 🔽 중앙 정렬
  const x = (pageW - imgW) / 2;
  const y = (pageH - imgH) / 2;
 
