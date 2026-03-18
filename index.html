@@ -178,7 +178,7 @@ function drawSeats(arr) {
 
     seat.innerHTML = "";
 
-    if (arr[i]) {
+    if (arr[i] !== null && arr[i] !== undefined) {
 
       let num = document.createElement("div");
       num.className = "num";
